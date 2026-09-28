@@ -6,5 +6,35 @@ pipeline {
                 checkout scm
             }
         }
+           stage('Build') {
+             agent {
+                 docker {
+                     image 'node:20-alpine'
+                     reuseNode true
+	    }
+	}
+	   steps {
+                sh 'npm install'
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -31,10 +31,6 @@ pipeline {
                 sh 'npm test'
             }
         }
-	   steps {
-                sh 'npm install'
-            }
-        }
     }
 }
 

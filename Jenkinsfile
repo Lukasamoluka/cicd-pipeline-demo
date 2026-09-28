@@ -16,6 +16,10 @@ pipeline {
                      reuseNode true
 	    }
 	}
+	  steps {
+                sh 'npm install'
+	}
+     }
 	        stage('Test') {
             agent {
                 docker {

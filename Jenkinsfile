@@ -60,7 +60,7 @@ pipeline {
                     docker rm app || true &&
                     docker run -d --name app -p 3000:3000 ${IMAGE}:latest &&
                     for i in \$(seq 1 10); do
-                        if docker exec app wget -qO- http://localhost:3000/health | grep -q healthy; then
+                        if docker exec app wget -qO- http://127.0.0.1:3000/health | grep -q healthy; then
                             echo "Health check passed"
                             exit 0
                         fi

@@ -54,11 +54,21 @@ pipeline {
             steps {
                 sshagent(credentials: ['deploy-target-ssh-key']) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no root@deploy-target '
-                            docker pull ${IMAGE}:latest &&
-                            docker stop app || true &&
-                            docker rm app || true &&
-                            docker run -d --name app -p 3000:3000 ${IMAGE}:latest
+                          ssh -o StrictHostKeyChecking=no root@deploy-target '
+                    docker pull ${IMAGE}:latest &&
+                    docker stop app || true &&
+                    docker rm app || true &&
+                    docker run -d --name app -p 3000:3000 ${IMAGE}:latest &&
+                    for i in \$(seq 1 10); do
+                        if docker exec app wget -qO- http://localhost:3000/health | grep -q healthy; then
+                            echo "Health check passed"
+                            exit 0
+                        fi
+                        echo "Waiting for app to become healthy... (\$i/10)"
+                        sleep 2
+                    done
+                    echo "Health check failed after 10 attempts"
+                    exit 1
                         '
                     """
                 }

@@ -1,1 +1,8 @@
 node_modules/
+
+# Terraform and secrets
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.pem
